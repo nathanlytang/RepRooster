@@ -1,0 +1,35 @@
+{
+  "name": "reprooster",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-check --tsconfig ./tsconfig.json && tsc -p tsconfig.node.json"
+  },
+  "devDependencies": {
+    "@crxjs/vite-plugin": "^2.0.0-beta.12",
+    "@sveltejs/vite-plugin-svelte": "^3.1.1",
+    "@tsconfig/svelte": "^5.0.4",
+    "@types/chrome": "^0.0.270",
+    "@types/node": "^22.4.2",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.41",
+    "svelte": "^4.2.18",
+    "svelte-check": "^3.8.5",
+    "tailwindcss": "^3.4.10",
+    "tslib": "^2.6.3",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.1"
+  },
+  "dependencies": {
+    "bits-ui": "^0.21.13",
+    "clsx": "^2.1.1",
+    "lucide-svelte": "^0.428.0",
+    "tailwind-merge": "^2.5.2",
+    "tailwind-variants": "^0.2.1"
+  }
+}
