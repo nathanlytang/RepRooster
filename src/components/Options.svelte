@@ -2,76 +2,14 @@
     import { onMount } from "svelte";
     import { Label } from "$lib/components/ui/label";
     import { Checkbox } from "$lib/components/ui/checkbox";
-    import type { Exercises, Interval, Options } from "src/models/options.model";
+    import type { Options } from "$models/options.model";
+    import { DefaultExercises, Intervals } from "$models/options.model";
     import * as RadioGroup from "$lib/components/ui/radio-group";
 
     let message: string | null = null;
-    let exercises: Exercises = [
-        {
-            id: "pushUp",
-            label: "Push ups",
-            enabled: true,
-        },
-        {
-            id: "sitUp",
-            label: "Sit ups",
-            enabled: true,
-        },
-        {
-            id: "squat",
-            label: "Squats",
-            enabled: true,
-        },
-        {
-            id: "plank",
-            label: "Planks",
-            enabled: true,
-        },
-        {
-            id: "burpee",
-            label: "Burpees",
-            enabled: true,
-        },
-        {
-            id: "jumpingJack",
-            label: "Jumping jacks",
-            enabled: true,
-        },
-    ];
-    let intervals: Interval = [
-        {
-            id: "5sec",
-            label: "5 seconds",
-            interval: 5,
-        },
-        {
-            id: "15m",
-            label: "15 minutes",
-            interval: 900,
-        },
-        {
-            id: "30m",
-            label: "30 minutes",
-            interval: 1800,
-        },
-        {
-            id: "45m",
-            label: "45 minutes",
-            interval: 2700,
-        },
-        {
-            id: "1h",
-            label: "1 hour",
-            interval: 3600,
-        },
-        {
-            id: "2h",
-            label: "2 hours",
-            interval: 7200,
-        },
-    ];
+    const intervals = Intervals;
     let options: Options = {
-        exercises: exercises,
+        exercises: DefaultExercises,
         interval: 1800,
     };
 

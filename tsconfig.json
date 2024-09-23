@@ -22,7 +22,13 @@
       ],
       "$lib/*": [
         "./lib/*"
-      ]
+      ],
+      "$models": [
+        "./src/models"
+      ],
+      "$models/*": [
+        "./src/models/*"
+      ],
     },
     "noEmit": true
   },
