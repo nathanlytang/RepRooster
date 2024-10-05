@@ -1,17 +1,18 @@
 <!-- https://svelte.dev/repl/a19df6f013434e01bb990349843af288?version=3.38.2 -->
 
 <script lang="ts">
-    import { createEventDispatcher, onDestroy } from "svelte";
+    import { onDestroy } from "svelte";
     import { tweened } from "svelte/motion";
     import { linear as easing } from "svelte/easing";
     import { fly } from "svelte/transition";
 
-    const dispatch = createEventDispatcher();
-
-    export let countdown: number;
+    export let nextAlarm: number;
+    
+    let countdown: number;
 
     let now = Date.now();
-    let end = now + countdown * 1000;
+    let end = nextAlarm * 1000;
+    countdown = (end - now) / 1000;
 
     $: count = Math.round((end - now) / 1000);
     $: h = Math.floor(count / 3600);
@@ -25,8 +26,6 @@
     let interval = setInterval(updateTimer, 1000);
     $: if (count === 0) clearInterval(interval);
 
-    // let isPaused: boolean;
-    // let isResetting: boolean;
     const duration = 1000;
 
     let offset = tweened(1, { duration, easing });
@@ -34,39 +33,6 @@
 
     $: offset.set(Math.max(count - 1, 0) / countdown);
     $: rotation.set((Math.max(count - 1, 0) / countdown) * 360);
-
-    // function handleNew() {
-    //     clearInterval(interval);
-    //     dispatch("new");
-    // }
-
-    // function handleStart() {
-    //     now = Date.now();
-    //     end = now + count * 1000;
-    //     interval = setInterval(updateTimer, 1000);
-    //     offset.set(Math.max(count - 1, 0) / countdown);
-    //     rotation.set((Math.max(count - 1, 0) / countdown) * 360);
-    //     isPaused = false;
-    // }
-
-    // function handlePause() {
-    //     offset.set(count / countdown);
-    //     rotation.set((count / countdown) * 360);
-    //     clearInterval(interval);
-    //     isPaused = true;
-    // }
-
-    // function handleReset() {
-    //     clearInterval(interval);
-    //     isResetting = true;
-    //     isPaused = false;
-    //     Promise.all([offset.set(1), rotation.set(360)]).then(() => {
-    //         isResetting = false;
-    //         now = Date.now();
-    //         end = now + countdown * 1000;
-    //         interval = setInterval(updateTimer, 1000);
-    //     });
-    // }
 
     function padValue(value: number, length = 2, char = "0") {
         const { length: currentLength } = value.toString();
@@ -180,46 +146,4 @@
         }
     }
 
-    /* button:nth-of-type(odd) {
-        width: max-content;
-        font-size: 0.9rem;
-        color: inherit;
-        border: none;
-        background: none;
-        text-transform: capitalize;
-    }
-
-    button:nth-of-type(odd):hover {
-        text-decoration: underline;
-    }
-
-    button:nth-of-type(2) {
-        color: inherit;
-        width: 3rem;
-        height: 3rem;
-        border-radius: 50%;
-        border: none;
-        padding: 1rem;
-        background: hsl(208, 100%, 50%);
-        box-shadow: 0px 1px 2px hsl(208, 100%, 50%);
-        transition:
-            box-shadow 0.2s ease-in-out,
-            transform 0.25s ease-in-out;
-    }
-
-    button:nth-of-type(2):hover,
-    button:nth-of-type(2):focus {
-        box-shadow: 0px 1px 5px hsl(208, 100%, 50%);
-    }
-
-    button:nth-of-type(2) svg {
-        margin: initial;
-        width: 100%;
-        height: auto;
-        display: block;
-    }
-
-    button[disabled] {
-        transform: scale(0);
-    } */
 </style>
