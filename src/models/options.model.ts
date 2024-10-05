@@ -3,11 +3,13 @@ export type Options = {
     interval: number
 }
 
-export type Exercises = {
+export type Exercise = {
     id: string,
     label: string,
     enabled: boolean
-}[]
+}
+
+export type Exercises = Exercise[]
 
 export const DefaultExercises: Exercises = [
     {

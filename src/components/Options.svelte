@@ -6,6 +6,7 @@
     import { DefaultExercises, Intervals } from "$models/options.model";
     import * as RadioGroup from "$lib/components/ui/radio-group";
 
+    const syncStorage = chrome.storage.sync;
     let message: string | null = null;
     const intervals = Intervals;
     let options: Options = {
@@ -13,16 +14,15 @@
         interval: 1800,
     };
 
-    onMount(() => {
-        chrome.storage.sync.get((data: Options) => {
-            if (Object.keys(data).length > 0) {
-                options = data;
-            }
-        });
+    onMount(async () => {
+        const settings = ((await syncStorage.get(["settings"])) as { settings: Options }).settings;
+        if (Object.keys(settings).length > 0) {
+            options = settings;
+        }
     });
 
     const handleSave = () => {
-        chrome.storage.sync.set(options).then(() => {
+        syncStorage.set({ settings: options }).then(() => {
             message = "Updated!";
 
             setTimeout(() => {
