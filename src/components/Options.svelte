@@ -29,6 +29,7 @@
                 message = null;
             }, 2000);
         });
+        chrome.runtime.sendMessage({ message: "save", settings: options });
     };
 </script>
 
