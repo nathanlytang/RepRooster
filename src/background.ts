@@ -23,7 +23,7 @@ chrome.runtime.onInstalled.addListener(async () => {
 
 function getNextAlarm(): number {
     // return Date.now() + (settings.interval * 1000);
-    return (Date.now() / 1000) + 5;
+    return (Date.now() / 1000) + 5; // TODO: REMOVE IN PROD
 }
 
 function setNextExercise(amount?: number, exercise?: Exercise) {
@@ -39,6 +39,12 @@ function setNextExercise(amount?: number, exercise?: Exercise) {
     });
 
     chrome.alarms.create("exercise", { when: nextAlarm * 1000 });
+
+    return {
+        nextAlarm,
+        nextAmount: amount ?? randomAmount,
+        nextExercise: exercise ?? randomExercise,
+    };
 }
 
 // Create notification on alarm
@@ -73,4 +79,17 @@ chrome.notifications.onButtonClicked.addListener(async (_, buttonIndex) => {
 // Open popup on notification click
 chrome.notifications.onClicked.addListener(() => {
     chrome.tabs.create({ url: "/src/popup/index.html" });
+});
+
+// Send and receive messages between pages
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.message === "snooze") {
+        sendResponse({ ...setNextExercise(request.amount, request.exercise) });
+    } else if (request.message === "complete") {
+        sendResponse({ ...setNextExercise() });
+    } else if (request.message === "save") {
+        settings = request.settings;
+    }
+
+    return true;
 });
