@@ -64,8 +64,9 @@
         nextExercise = response.nextExercise;
         nextAmount = response.nextAmount;
 
-        // Set countdown, rounding to ensure it starts from the nearest second
         startTimer();
+
+        chrome.notifications.clear("exercise");
     }
 
     function startTimer() {
@@ -75,7 +76,7 @@
 
     // Handle case where notification buttons are clicked while popup is open
     chrome.notifications.onButtonClicked.addListener(async (_, buttonIndex) => {
-        await new Promise((resolve) => setTimeout(resolve, 500)); // Wait until background script has updated next data
+        await new Promise((resolve) => setTimeout(resolve, 500)); // HACK: Wait until background script has updated next data
         const settings = await syncStorage.get(); // Get new data
 
         nextAlarm = settings.nextAlarm;
