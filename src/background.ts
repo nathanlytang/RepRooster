@@ -22,8 +22,8 @@ chrome.runtime.onInstalled.addListener(async () => {
 })
 
 function getNextAlarm(): number {
-    // return Date.now() + (settings.interval * 1000);
-    return (Date.now() / 1000) + 5; // TODO: REMOVE IN PROD
+    return Date.now() / 1000 + settings.interval;
+    // return (Date.now() / 1000) + 5; // TODO: REMOVE IN PROD
 }
 
 function setNextExercise(amount?: number, exercise?: Exercise) {

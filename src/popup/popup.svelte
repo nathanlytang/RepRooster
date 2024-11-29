@@ -132,9 +132,10 @@
 
     <!-- Bottom Row -->
     <div class="flex justify-between items-center">
-        <button>
+        <!-- <button>
             <img src="/list_24.svg" alt="Logs" class="h-6 w-6" />
-        </button>
+        </button> -->
+        <span></span>
 
         <button id="settingsButton" on:click={openSettings}>
             <img src="/settings_24.svg" alt="Settings" class="h-6 w-6" />
