@@ -15,8 +15,6 @@
     },
     "permissions": [
         "storage",
-        "unlimitedStorage",
-        "favicon",
         "notifications",
         "alarms",
         "tabs"
