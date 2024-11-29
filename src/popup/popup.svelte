@@ -88,7 +88,7 @@
 </script>
 
 <svelte:head>
-    <link rel="preload" as="font" href="/Inter.woff2" type="font/woff2" crossorigin="anonymous" />
+    <link as="font" href="/Inter.woff2" type="font/woff2" crossorigin="anonymous" />
 </svelte:head>
 
 <div class="grid grid-rows-[5rem_1fr_2rem] h-[calc(100vh)] w-full p-4 box-border">

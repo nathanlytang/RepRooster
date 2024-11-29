@@ -9,7 +9,7 @@ const MAX = 20;
 chrome.runtime.onInstalled.addListener(async () => {
     settings = (await syncStorage.get("settings") as { settings: Options }).settings;
 
-    if (!settings.exercises || !settings.interval) {
+    if (!settings || !settings.exercises || !settings.interval) {
         settings = {
             exercises: DefaultExercises,
             interval: 1800,
