@@ -6,7 +6,11 @@ const MIN = 10;
 const MAX = 20;
 
 // Initialize settings if they do not exist on extension load
-chrome.runtime.onInstalled.addListener(async () => {
+chrome.runtime.onInstalled.addListener(async () => await startUp());
+chrome.runtime.onStartup.addListener(async () => await startUp());
+chrome.management.onEnabled.addListener(async () => await startUp());
+
+async function startUp() {
     settings = (await syncStorage.get("settings") as { settings: Options }).settings;
 
     if (!settings || !settings.exercises || !settings.interval) {
@@ -19,7 +23,7 @@ chrome.runtime.onInstalled.addListener(async () => {
     }
 
     setNextExercise();
-})
+}
 
 function getNextAlarm(): number {
     return Date.now() / 1000 + settings.interval;

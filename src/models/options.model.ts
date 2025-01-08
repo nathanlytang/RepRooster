@@ -52,11 +52,6 @@ export type Interval = {
 
 export const Intervals: Interval = [
     {
-        id: "5sec",
-        label: "5 seconds",
-        interval: 5,
-    },
-    {
         id: "15m",
         label: "15 minutes",
         interval: 900,
