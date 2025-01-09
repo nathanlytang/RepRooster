@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "RepRooster",
     "description": "Scheduled workout reminders for your daily fitness routine.",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "action": {
         "default_popup": "src/popup/index.html"
     },

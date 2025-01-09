@@ -6,9 +6,20 @@ const MIN = 10;
 const MAX = 20;
 
 // Initialize settings if they do not exist on extension load
-chrome.runtime.onInstalled.addListener(async () => await startUp());
-chrome.runtime.onStartup.addListener(async () => await startUp());
-chrome.management.onEnabled.addListener(async () => await startUp());
+chrome.runtime.onInstalled.addListener(async () => {
+    await startUp();
+    setNextExercise();
+});
+
+chrome.runtime.onStartup.addListener(async () => {
+    await startUp();
+    setNextExercise();
+});
+
+chrome.management.onEnabled.addListener(async () => {
+    await startUp();
+    setNextExercise();
+});
 
 async function startUp() {
     settings = (await syncStorage.get("settings") as { settings: Options }).settings;
@@ -21,8 +32,6 @@ async function startUp() {
 
         await syncStorage.set({ settings: settings });
     }
-
-    setNextExercise();
 }
 
 function getNextAlarm(): number {
@@ -53,6 +62,7 @@ function setNextExercise(amount?: number, exercise?: Exercise) {
 
 // Create notification on alarm
 chrome.alarms.onAlarm.addListener(async () => {
+    await startUp();
     await Promise.all([syncStorage.get("nextAmount"), syncStorage.get("nextExercise")]).then(([amount, exercise]) => {
         chrome.notifications.create("exercise", {
             title: "RepRooster",
@@ -67,6 +77,7 @@ chrome.alarms.onAlarm.addListener(async () => {
 
 // Set next exercise when notification buttons clicked
 chrome.notifications.onButtonClicked.addListener(async (_, buttonIndex) => {
+    await startUp();
     // If Snooze Button, then keep the same exercise and set new timer
     if (buttonIndex === 0) {
         await Promise.all([syncStorage.get("nextAmount"), syncStorage.get("nextExercise")]).then(
@@ -81,19 +92,25 @@ chrome.notifications.onButtonClicked.addListener(async (_, buttonIndex) => {
 });
 
 // Open popup on notification click
-chrome.notifications.onClicked.addListener(() => {
-    chrome.tabs.create({ url: "/src/popup/index.html" });
+chrome.notifications.onClicked.addListener(async () => {
+    await startUp();
+    chrome.tabs.create({ url: "/src/popup/index.html", active: true });
+    
 });
 
 // Send and receive messages between pages
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.message === "snooze") {
-        sendResponse({ ...setNextExercise(request.amount, request.exercise) });
-    } else if (request.message === "complete") {
-        sendResponse({ ...setNextExercise() });
-    } else if (request.message === "save") {
-        settings = request.settings;
-    }
+    (async () => {
+        await startUp();
+        if (request.message === "snooze") {
+            console.log("snooze requested")
+            sendResponse({ ...setNextExercise(request.amount, request.exercise) });
+        } else if (request.message === "complete") {
+            sendResponse({ ...setNextExercise() });
+        } else if (request.message === "save") {
+            settings = request.settings;
+        }
+    })();
 
     return true;
 });
